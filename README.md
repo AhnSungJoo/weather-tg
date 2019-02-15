@@ -7,4 +7,4 @@ Weather api : http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/Forec
 
 레퍼런스
 [1] Weather : https://blog.naver.com/ufo7142/220716957884   
-[2] 미세 먼지 : 
+[2] Weather-2 : http://makeshare.org/bbs/board.php?bo_table=raspberrypi&wr_id=63
