@@ -18,7 +18,7 @@ def get_weather_data(key, nx, ny):
         response = requests.get(url)
     except Exception as e:
         print('Crawling Error:', e)
-        
+
     data = response.json()
     data = data['response']['body']['items']['item']
     return data
@@ -68,4 +68,4 @@ if __name__ == '__main__':
     now_date = get_now() 
     basetime = '0200'
     msg = parse_data()
-    # tg.sendTo('weather', msg)
+    tg.sendTo('weather', str(now_date) + '\n' + msg)
