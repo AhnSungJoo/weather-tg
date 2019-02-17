@@ -1,7 +1,9 @@
+from urllib import request 
+import json
 import requests
 import config
 import tgalarm as tg
-
+import xmltodict, json
 
 def get_now():
     import datetime
@@ -17,13 +19,37 @@ def get_weather_data(key, nx, ny):
     try:
         response = requests.get(url)
     except Exception as e:
-        print('Crawling Error:', e)
+        print('Crawling Weather data Error:', e)
 
     data = response.json()
     data = data['response']['body']['items']['item']
     return data
 
-def parse_data():
+def get_dust_data(key):
+    url = 'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureLIst?' + \
+    'serviceKey=' + key + \
+    '&numOfRows=10&pageNo=1&itemCode=PM10&dataGubun=HOUR&searchCondition=MONTH'
+    try:
+        response = request.urlopen(url).read().decode('utf-8')
+        # res = requests.get(url)
+    except Exception as e:
+        print('Crawling dust data Error:', e)
+
+    # print(response.read())
+    # data = response.read()
+    # print(parse(data))
+    # print(json.loads(response))
+    # print(response)
+    # data = et.parse(response)
+    # print(data)
+    # print(response.findAll('<seoul>'))
+    o = xmltodict.parse(response)
+    return json.dumps(o)
+
+ 
+
+
+def parse_weather_data():
     key = config.secret_key
     nx = config.region['mokdong']['nx']
     ny = config.region['mokdong']['ny']
@@ -63,9 +89,28 @@ def parse_data():
     msg = '최저기온 : ' + str(mn) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty   
     return msg
 
+def parse_dust_data():
+    data = eval(get_dust_data(config.secret_key))
+    data = data['response']['body']['items']['item']
+    seoul = int(data[0]['seoul'])
+    msg = ''
+    if seoul >= 0 and seoul <=15:
+        msg = '좋음'
+    elif seoul >=16 and seoul <= 35:
+        msg = '보통'
+    elif seoul >= 36 and seoul <= 75:
+        msg = '나쁨'
+    elif seoul >=76:
+        msg = '매우 나쁨'
     
+    return msg 
+        
+
 if __name__ == '__main__':
     now_date = get_now() 
     basetime = '0200'
-    msg = parse_data()
-    tg.sendTo('weather', str(now_date) + '\n' + msg)
+    msg = parse_weather_data()
+    msg2 = parse_dust_data()
+    tg.sendTo('weather', str(now_date) + '\n' + msg + '\n 미세먼지 현황 : ' + msg2)
+
+
