@@ -8,26 +8,27 @@ def get_now():
     now =str(datetime.datetime.now())[:10].replace('-','')
     return now
 
-def get_weather_data():
+def get_weather_data(key, nx, ny):
     url = 'http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?' + \
     'serviceKey=' + key + \
     '&base_date=' + now_date + '&base_time=' + basetime + \
-    '&nx=' + mokdong_nx + '&ny=' + mokdong_ny + \
+    '&nx=' + nx + '&ny=' + ny + \
     '&numOfRows=10' + '&pageNo=1' + '&_type=json'
     try:
         response = requests.get(url)
     except Exception as e:
         print('Crawling Error:', e)
-    print(url)
+        
     data = response.json()
-    # return data['response']['body']['items']['item']
     data = data['response']['body']['items']['item']
-    for item in data:
-        print(item['category'])
     return data
 
 def parse_data():
-    data = get_weather_data()
+    key = config.secret_key
+    nx = config.region['mokdong']['nx']
+    ny = config.region['mokdong']['ny']
+    data = get_weather_data(key, nx, ny)
+    print(data)
     pty = sky = mn = mx = rain_per = False
     for item in data:
         if item['category'] == 'TMN':
@@ -64,10 +65,7 @@ def parse_data():
 
     
 if __name__ == '__main__':
-    key = config.secret_key
-    mokdong_nx = config.region['mokdong']['nx']
-    mokdong_ny = config.region['mokdong']['ny']
     now_date = get_now() 
     basetime = '0200'
     msg = parse_data()
-    tg.sendTo('weather', msg)
+    # tg.sendTo('weather', msg)
