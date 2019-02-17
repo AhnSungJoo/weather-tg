@@ -43,6 +43,7 @@ def get_dust_data(key):
     # data = et.parse(response)
     # print(data)
     # print(response.findAll('<seoul>'))
+    print('response:', response)
     o = xmltodict.parse(response)
     return json.dumps(o)
 
