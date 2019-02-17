@@ -34,15 +34,7 @@ def get_dust_data(key):
         # res = requests.get(url)
     except Exception as e:
         print('Crawling dust data Error:', e)
-
-    # print(response.read())
-    # data = response.read()
-    # print(parse(data))
-    # print(json.loads(response))
-    # print(response)
-    # data = et.parse(response)
-    # print(data)
-    # print(response.findAll('<seoul>'))
+        
     print('response:', response)
     o = xmltodict.parse(response)
     return json.dumps(o)
