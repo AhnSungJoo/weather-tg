@@ -22,11 +22,11 @@ def get_weather_data(key, nx, ny):
             response = requests.get(url)
         except Exception as e:
             print('Crawling Weather data Error:', e)
-
         data = response.json()
-        data = data['response']['body']['items']['item']
-        datas.append(data)
-    
+        print(data)
+        if data != [] or data != None:
+            data = data['response']['body']['items']['item']
+            datas.append(data)
     return datas
 
 def get_dust_data(key):
@@ -65,6 +65,11 @@ def parse_weather_data():
             msg = '군포 날씨 \n'
         elif region == 'sankok':
             msg = '산곡 날씨 \n'
+        elif region == 'pankyo':
+            msg = '판교 날씨 \n'
+        elif region == 'gangnam':
+            msg = '강남 날씨 \n'
+
         for data in datas:
             for item in data:
                 if item['category'] == 'TMN':
@@ -96,6 +101,8 @@ def parse_weather_data():
                     pty = '비/눈'
                 elif pty == 3:
                     pty = '눈'
+        if mx is False:
+            mx = "모름"
         msg += '최저기온 : ' + str(mn) + '도 \n'  + '최고기온 : ' + str(mx) + '도 \n' + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
         weather_msg += msg
     return weather_msg
@@ -132,6 +139,6 @@ if __name__ == '__main__':
     msg = parse_weather_data()
     msg2 = parse_dust_data()
     msg += msg2
-    # tg.sendTo('weather', str(now_date) + '\n' + msg + '\n 미세먼지 현황 : ' + msg2)
-    tg.sendTo('weather', msg)
+    print(msg)
+    # tg.sendTo('weather', msg)
 
