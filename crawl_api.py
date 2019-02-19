@@ -140,5 +140,5 @@ if __name__ == '__main__':
     msg2 = parse_dust_data()
     msg += msg2
     print(msg)
-    # tg.sendTo('weather', msg)
+    tg.sendTo('weather', msg)
 
