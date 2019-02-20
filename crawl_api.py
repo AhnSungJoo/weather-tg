@@ -7,8 +7,11 @@ import xmltodict, json
 
 def get_now():
     import datetime
-    now =str(datetime.datetime.now())[:10].replace('-','')
-    return now
+    now = str(datetime.datetime.now())[:10]
+    # date_time = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
+    # date_time -= datetime.timedelta(days=1)
+    # date_time = str(date_time)[:10]
+    return now.replace('-', '')
 
 def get_weather_data(key, nx, ny):
     datas = []
@@ -103,7 +106,7 @@ def parse_weather_data():
                     pty = '눈'
         if mx is False:
             mx = "모름"
-        msg += '최저기온 : ' + str(mn) + '도 \n'  + '최고기온 : ' + str(mx) + '도 \n' + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
+        msg += '최저기온 : ' + str(mn) + '도 \n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
         weather_msg += msg
     return weather_msg
 
@@ -135,7 +138,6 @@ def parse_dust_data():
 
 if __name__ == '__main__':
     now_date = get_now() 
-    basetime = '0200'
     msg = parse_weather_data()
     msg2 = parse_dust_data()
     msg += msg2
