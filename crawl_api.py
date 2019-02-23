@@ -28,7 +28,7 @@ def get_weather_data(key, nx, ny):
         except Exception as e:
             print('Crawling Weather data Error:', e)
         data = response.json()
-        print(data)
+        # print(data)
         if data != [] or data != None:
             data = data['response']['body']['items']['item']
             datas.append(data)
@@ -107,7 +107,7 @@ def parse_weather_data():
                 elif pty == 3:
                     pty = '눈'
 
-        mx = cn.parse_max_weather(region)
+        mx = cn.parse_max_weather(msg)
         msg += '최저기온 : ' + str(mn) + '˚ \n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
         weather_msg += msg
     return weather_msg

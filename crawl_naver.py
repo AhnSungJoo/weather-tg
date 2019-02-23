@@ -6,6 +6,7 @@ import bs4
 
 def parse_max_weather(location):
     # location = '목동 날씨'
+    location = location.replace('\n', '')
     parse_location = urllib.parse.quote(location)
     url = 'https://search.naver.com/search.naver?ie=utf8&query='+ parse_location
     req = Request(url)
