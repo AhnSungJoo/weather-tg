@@ -4,6 +4,7 @@ import requests
 import config
 import tgalarm as tg
 import xmltodict, json
+import craw_naver as cn
 
 def get_now():
     import datetime
@@ -104,9 +105,9 @@ def parse_weather_data():
                     pty = '비/눈'
                 elif pty == 3:
                     pty = '눈'
-        if mx is False:
-            mx = "모름"
-        msg += '최저기온 : ' + str(mn) + '도 \n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
+                    
+        mx = cn.parse_max_weather(region)
+        msg += '최저기온 : ' + str(mn) + '˚ \n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
         weather_msg += msg
     return weather_msg
 
