@@ -74,6 +74,10 @@ def parse_weather_data():
             msg = '판교 날씨 \n'
         elif region == 'gangnam':
             msg = '강남 날씨 \n'
+        elif region == 'sinchon':
+            msg = '신촌 날씨\n'
+        elif region == 'wonju':
+            msg = '원주 날씨\n'
 
         for data in datas:
             for item in data:
@@ -107,42 +111,16 @@ def parse_weather_data():
                 elif pty == 3:
                     pty = '눈'
 
-        mx = cn.parse_max_weather(msg)
-        msg += '최저기온 : ' + str(mn) + '˚ \n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n\n'   
+        mn, mx = cn.parse_temper_weather(msg)
+        dust = cn.parse_dust(msg)
+        msg += '최저기온 : ' + str(mn) + '\n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n미세먼지: ' + dust + '\n\n'   
         weather_msg += msg
     return weather_msg
-
-def parse_dust_data():
-    dust_msg = '- 오늘의 미세먼지 - \n'
-    data = eval(get_dust_data(config.secret_key))
-    data = data['response']['body']['items']['item']
-    for region in config.dust_region:
-        val = int(data[0][region])
-        msg = ''
-        if region == 'seoul':
-            msg = '서울 : '
-        elif region == 'incheon':
-            msg = '인천 : '
-        elif region == 'gyeonggi':
-            msg = '경기 : '
-        if val >= 0 and val <=15:
-            msg += '좋음 \n'
-        elif val >=16 and val <= 35:
-            msg += '보통 \n'
-        elif val >= 36 and val <= 75:
-            msg += '나쁨 \n'
-        elif val >=76:
-            msg += '매우 나쁨 \n'
-        dust_msg += msg
-    dust_msg += "건강한 하루 보내세요 ^^"
-    return dust_msg
         
 
 if __name__ == '__main__':
     now_date = get_now() 
     msg = parse_weather_data()
-    msg2 = parse_dust_data()
-    msg += msg2
     print(msg)
     tg.sendTo('weather', msg)
 
