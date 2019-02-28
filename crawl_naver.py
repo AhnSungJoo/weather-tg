@@ -6,6 +6,7 @@ import bs4
 
 def parse_dust(location):
     # location = '목동 날씨'
+    print(location)
     location = location.replace('\n', '')
     parse_location = urllib.parse.quote(location)
     url = 'https://search.naver.com/search.naver?ie=utf8&query='+ parse_location
@@ -32,4 +33,3 @@ def parse_temper_weather(location):
     mn = soup.find('span',class_='min').text
     return mn, mx
 
-parse_dust('신촌 날씨')
