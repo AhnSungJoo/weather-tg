@@ -14,10 +14,16 @@ def parse_dust(location):
     page = urlopen(req)
     html = page.read()
     soup = bs4.BeautifulSoup(html, features='lxml')
-    result = soup.find('dl',class_='indicator').find('dd', class_='lv2')
-    kor = result.text
-    return kor
-
+    results = soup.find('dl',class_='indicator').findAll('dd')
+    title_list = soup.find('dl',class_='indicator').findAll('dt')
+    msg = ''
+    for idx, result in enumerate(results):
+       msg = msg + title_list[idx].text + ' ' + result.text + '\n'
+    # kor = result.text
+    # print(kor)
+    # return kor
+    # print(msg)
+    return msg
 
 def parse_temper_weather(location):
     # location = '목동 날씨'

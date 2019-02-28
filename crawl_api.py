@@ -113,7 +113,7 @@ def parse_weather_data():
 
         mn, mx = cn.parse_temper_weather(msg)
         dust = cn.parse_dust(msg)
-        msg += '최저기온 : ' + str(mn) + '\n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n미세먼지: ' + dust + '\n\n'   
+        msg += '최저기온 : ' + str(mn) + '\n' + '최고기온 :' + str(mx) + '\n'  + '하늘 상태 : ' + sky + '\n' + '강우율 : ' + str(rain_per) + '% \n'  + '강우형태 :' + pty + '\n미세먼지: ' + dust + '\n'   
         weather_msg += msg
     return weather_msg
         
